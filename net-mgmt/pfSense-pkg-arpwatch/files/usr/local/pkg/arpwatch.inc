@@ -111,6 +111,12 @@ function arpwatch_validate_input($post, &$input_errors) {
 	if (filter_var($post['notifications_recipient'], FILTER_VALIDATE_EMAIL) === false) {
 		$input_errors[] = gettext("{$post['notifications_recipient']} is not a valid email address.");
 	}
+
+	for ($i = 0; $i < 30; $i++) {
+		if (!empty($post["mac{$i}"]) && !is_macaddr($post["mac{$i}"])) {
+			$input_errors[] = "{$post["mac{$i}"]} is not valid MAC address.";
+		}
+	}
 }
 
 function arpwatch_resync_config_command() {
@@ -222,6 +228,13 @@ $message = stream_get_contents($fd);
 fclose($fd);
 
 if (false !== $message) {
+	if (is_array($config['installedpackages']['arpwatch']['config'][0]['row'])) {
+		foreach ($config['installedpackages']['arpwatch']['config'][0]['row'] as $sup) {
+			if (strpos($message, $sup['mac'])) {
+				return;
+			}
+		}
+	}
 	$subject = array();
 	preg_match('/^Subject: (.*)$/m', $message, $subject);
 	$message = preg_replace('/^From: .*$/m', '', $message);

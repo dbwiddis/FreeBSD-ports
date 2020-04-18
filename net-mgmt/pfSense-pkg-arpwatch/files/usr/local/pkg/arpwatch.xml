@@ -117,6 +117,20 @@
 			<type>checkbox</type>
 			<description>Reset the database of collected mac/ip addresses before starting Arpwatch.</description>
 		</field>
+		<field>
+			<fielddescr>Suppress MAC</fielddescr>
+			<fieldname>none</fieldname>
+			<type>rowhelper</type>
+			<rowhelper>
+				<rowhelperfield>
+					<fieldname>mac</fieldname>
+					<type>input</type>
+					<size>60</size>
+					<required/>
+					<fielddescr>Enter the MAC addresses you want to suppress from the notifications.</fielddescr>
+				</rowhelperfield>
+			</rowhelper>
+		</field>
 	</fields>
 	<custom_php_install_command>
 		arpwatch_install_command();
