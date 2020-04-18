@@ -228,15 +228,16 @@ $message = stream_get_contents($fd);
 fclose($fd);
 
 if (false !== $message) {
+	$subject = array();
+	preg_match('/^Subject: (.*)$/m', $message, $subject);
 	if (is_array($config['installedpackages']['arpwatch']['config'][0]['row'])) {
 		foreach ($config['installedpackages']['arpwatch']['config'][0]['row'] as $sup) {
-			if (strpos($message, $sup['mac'])) {
+			if (strpos($message, $sup['mac']) and
+			  ($sup['notification_type'] === 'all' or $sup['notification_type'] === $subject[1])) {
 				return;
 			}
 		}
 	}
-	$subject = array();
-	preg_match('/^Subject: (.*)$/m', $message, $subject);
 	$message = preg_replace('/^From: .*$/m', '', $message);
 	$message = preg_replace('/^To: .*$/m', '', $message);
 	$message = preg_replace('/^Subject: .*$/m', '', $message);
@@ -251,7 +252,7 @@ EOF;
 
 	file_put_contents(ARPWATCH_SENDMAIL_PROXY, $sendmail_proxy);
 	chmod(ARPWATCH_SENDMAIL_PROXY, 0755);
-	
+
 	if (!file_exists(ARPWATCH_SENDMAIL_PATH)) {
 		@symlink(ARPWATCH_SENDMAIL_PROXY, ARPWATCH_SENDMAIL_PATH);
 	}

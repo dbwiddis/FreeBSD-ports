@@ -123,6 +123,18 @@
 			<type>rowhelper</type>
 			<rowhelper>
 				<rowhelperfield>
+					<fieldname>notification_type</fieldname>
+					<type>select</type>
+					<options>
+						<option><name>all</name><value>all</value></option>
+						<option><name>new activity</name><value>new activity</value></option>
+						<option><name>new station</name><value>new station</value></option>
+						<option><name>flip flop</name><value>flip flop</value></option>
+						<option><name>changed ethernet address</name><value>changed ethernet address</value></option>
+					</options>
+					<fielddescr>Type of notification to suppress.</fielddescr>
+				</rowhelperfield>
+				<rowhelperfield>
 					<fieldname>mac</fieldname>
 					<type>input</type>
 					<size>60</size>
